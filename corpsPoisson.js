@@ -2,11 +2,11 @@
 
 const corpsPoisson = (function(){
 	return{
-		Corps : function(){
-			var path = traceLigne();
-			var tete = traceTete();
+		Corps : function(tete, ligne){
+			var path = ligne;
+			var tete = tete;
 			var radius = tete.radius;
-			var tube = new THREE.TubeBufferGeometry(path, 64, radius, 8, closed);
+			var tube = new THREE.TubeBufferGeometry(path, 64, radius, 8, closed);//ne pas oublier d'utiliser THREE.Mesh(geometry, texture)! et graph.add()
 			return tube;
 		}
 	}
