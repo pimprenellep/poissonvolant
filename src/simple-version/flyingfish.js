@@ -14,6 +14,8 @@ var orbitControls;
 
 var drawingFishBody;
 
+var usingTexture = false;
+
 function run() {
 	init();
 	animate();
@@ -71,7 +73,16 @@ function makeFishFromContour() {
 
 	var geometry = new THREE.LatheGeometry(splinePoints);
 	geometry.applyMatrix(new THREE.Matrix4().makeRotationZ(-Math.PI/2));
-	var material = new THREE.MeshNormalMaterial({side:THREE.DoubleSide});
+	geometry.applyMatrix(new THREE.Matrix4().makeScale(1, 1, 0.3));
+
+	var material;
+	if(usingTexture)
+		material = new THREE.MeshBasicMaterial(
+			{side:THREE.DoubleSide, map: THREE.ImageUtils.loadTexture('./../data/fish-texture-rot.jpg')});
+	else
+		material = new THREE.MeshNormalMaterial(
+			{side:THREE.DoubleSide});
+
 	fish = new THREE.Mesh(geometry, material);
 	scene.add(fish);
 	orbitControls.enabled = true;
