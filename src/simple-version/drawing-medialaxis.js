@@ -17,7 +17,6 @@ function addMedialAxis() {
 }
 
 function addEdgesToScene(edges) {
-	console.log(edges);
 	const linesGroup = new THREE.Group();
 	sceneWrapper.scene.add(linesGroup);
 

@@ -75,9 +75,7 @@ getNewLine: function(firstPoint, secondPoint) {
 },
 
 getTrace: function() {
-	const spline = new THREE.SplineCurve(this.tracePoints);
-	const numSamplePoints = 20;
-	return spline.getPoints(numSamplePoints);
+	return this.tracePoints.slice();
 },
 
 
