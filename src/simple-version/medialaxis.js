@@ -8,7 +8,6 @@ get: function(points) {
 		xl: -VORONOI_BOUNDS, xr: VORONOI_BOUNDS,
 		yt: -VORONOI_BOUNDS, yb: VORONOI_BOUNDS,
 	};
-	this.calculateSharpBoundingBox(points);
 
 	const diagram = voronoi.compute(points, boundingBox);
 	const medialAxisEdges = [];
@@ -17,15 +16,6 @@ get: function(points) {
 			medialAxisEdges.push(edge);
 	return medialAxisEdges;
 },
-
-calculateSharpBoundingBox(points) {
-	this.bounds = {};
-	this.bounds.xMin = Math.min(...points.map(point => point.x));
-	this.bounds.xMax = Math.max(...points.map(point => point.x));
-	this.bounds.yMin = Math.min(...points.map(point => point.y));
-	this.bounds.yMax = Math.max(...points.map(point => point.y));
-},
-
 
 insideRegion: function(edge, points) {
 	return this.pointInsideRegion(edge.va, points) && this.pointInsideRegion(edge.vb, points);
