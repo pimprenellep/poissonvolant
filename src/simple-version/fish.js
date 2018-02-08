@@ -12,6 +12,7 @@ function startDrawFishBody() {
 }
 
 function endDrawFishBody() {
+	Tracer.removeTrace(sceneWrapper.scene);
 	FishModeler.drawBody(sceneWrapper.scene, Tracer.getTrace());
 }
 

@@ -41,10 +41,13 @@ stopTracking: function() {
 	document.removeEventListener('mousedown', this.startTracking);
 	document.removeEventListener('mouseup', this.stopTracking);	
 	this.sceneWrapper.orbitControls.enabled = true;
-	this.sceneWrapper.scene.remove(this.traceLines);
 	this.callback();
 	this.sceneWrapper = undefined;
 	this.callback = undefined;
+},
+
+removeTrace: function(scene) {
+	scene.remove(this.traceLines);
 },
 
 trackPosition: function() {
@@ -72,7 +75,9 @@ getNewLine: function(firstPoint, secondPoint) {
 },
 
 getTrace: function() {
-	return this.tracePoints.slice();
+	const spline = new THREE.SplineCurve(this.tracePoints);
+	const numSamplePoints = 20;
+	return spline.getPoints(numSamplePoints);
 },
 
 
