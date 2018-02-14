@@ -5,9 +5,10 @@ const Input = {
 	mouse: new THREE.Vector2(),
 
 	handle: function() {
-		for(key in this.keyCommand)
+		for(let key in this.keyCommand){
 			if(this.isPressed[key])
 				this.keyCommand[key]();
+		}
 	},
 
 	getMouse3DCoordinates: function(camera) {

@@ -35,6 +35,7 @@ class SceneWrapper {
 
 	animate() {
 		requestAnimationFrame(this.animate.bind(this));
+		Input.handle();
 		for(let animation of this.animations)
 			animation();
 		this.render();

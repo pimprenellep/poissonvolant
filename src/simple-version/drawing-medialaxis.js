@@ -12,6 +12,7 @@ function startDrawing() {
 }
 
 function addMedialAxis() {
+	Tracer.closeTrace();
 	medialAxisEdges = MedialAxis.get(Tracer.getTrace());
 	addEdgesToScene(medialAxisEdges);
 }

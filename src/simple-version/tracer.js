@@ -42,8 +42,8 @@ stopTracking: function() {
 	document.removeEventListener('mouseup', this.stopTracking);	
 	this.sceneWrapper.orbitControls.enabled = true;
 	this.callback();
-	this.sceneWrapper = undefined;
-	this.callback = undefined;
+	//this.sceneWrapper = null;
+	//this.callback = null;
 },
 
 removeTrace: function(scene) {
@@ -61,6 +61,15 @@ addPointToTrace: function(point) {
 	if(this.tracePoints.length >= 2) {
 		const length = this.tracePoints.length;
 		const line = this.getNewLine(this.tracePoints[length-2],
+									this.tracePoints[length-1]);
+		this.traceLines.add(line);
+	}
+},
+
+closeTrace: function() {
+	if(this.tracePoints.length >= 2) {
+		const length = this.tracePoints.length;
+		const line = this.getNewLine(this.tracePoints[0],
 									this.tracePoints[length-1]);
 		this.traceLines.add(line);
 	}
