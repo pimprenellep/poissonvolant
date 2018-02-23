@@ -76,11 +76,27 @@ closeTrace: function() {
 },
 
 getNewLine: function(firstPoint, secondPoint) {
+	firstPoint = this.projectPointNearCamera(firstPoint);
+	secondPoint = this.projectPointNearCamera(secondPoint);
+
 	const geometry = new THREE.Geometry();
 	geometry.vertices.push(firstPoint);
 	geometry.vertices.push(secondPoint);
 	const material = new THREE.LineBasicMaterial();
 	return new THREE.Line(geometry, material);
+},
+
+projectPointNearCamera: function(point) {
+	const newPoint = new THREE.Vector3();
+
+	newPoint.add(point);
+	newPoint.sub(this.sceneWrapper.camera.position);
+
+	newPoint.multiplyScalar(0.2);
+
+	newPoint.add(this.sceneWrapper.camera.position);
+
+	return newPoint;
 },
 
 getTrace: function() {

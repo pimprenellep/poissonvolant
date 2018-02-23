@@ -27,11 +27,36 @@ class SceneWrapper {
 	initScene() {
 		this.scene = new THREE.Scene();
 		this.orbitControls = new THREE.OrbitControls(this.camera);
+		this.initLight();
 	}
 
 	render() {
 		this.renderer.render(this.scene, this.camera);
 	}
+
+	initLight() {
+        var spotLight = new THREE.SpotLight(0xffffff,0.9);
+        var lightPosition = new THREE.Vector3(0, 0, 50);
+        spotLight.position.copy(lightPosition);
+        spotLight.castShadow = true;
+        this.scene.add(spotLight);
+
+        spotLight = new THREE.SpotLight(0xffffff,0.9);
+        lightPosition = new THREE.Vector3(-30, 0, 30);
+        spotLight.position.copy(lightPosition);
+        spotLight.castShadow = true;
+        this.scene.add(spotLight);
+
+        spotLight = new THREE.SpotLight(0xffffff,0.9);
+        lightPosition = new THREE.Vector3(0, 0, -30);
+        spotLight.position.copy(lightPosition);
+        spotLight.castShadow = true;
+        this.scene.add(spotLight);
+
+	    const ambient = new THREE.AmbientLight( 0xffffff, 0.4 );
+	    this.scene.add(ambient);
+    }
+
 
 	animate() {
 		requestAnimationFrame(this.animate.bind(this));
