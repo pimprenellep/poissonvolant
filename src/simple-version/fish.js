@@ -1,5 +1,6 @@
 
 var sceneWrapper;
+var bodyPoints;
 
 function start() {
 	sceneWrapper = new SceneWrapper();
@@ -13,28 +14,30 @@ function startDrawFishBody() {
 
 function endDrawFishBody() {
 	Tracer.removeTrace(sceneWrapper.scene);
-	FishModeler.drawBody(sceneWrapper.scene, Tracer.getTrace());
+	bodyPoints = Tracer.getTrace();
+	BodyModeler.drawBody(sceneWrapper.scene, bodyPoints);
 	startDrawingFins();
 }
 
 var isDrawingFins;
 function startDrawingFins() {
 	isDrawingFins = true;
-	Input.keyCommand['v'] = function() { isDrawingFins = false };
-	startDrawingOneFin();
+	Input.keyCommand[' '] = function() { isDrawingFins = false };
+	startDrawingOnePart();
 }
 
-function startDrawingOneFin() {
-	Tracer.start(sceneWrapper, finishOneFin);
+function startDrawingOnePart() {
+	Tracer.start(sceneWrapper, finishOnePart);
 }
 
-function finishOneFin() {
+function finishOnePart() {
 	Tracer.removeTrace(sceneWrapper.scene);
 	if(isDrawingFins) {
-		FishModeler.drawFin(sceneWrapper.scene, Tracer.getTrace());
-		startDrawingOneFin();
+		FinsModeler.drawFin(sceneWrapper.scene, sceneWrapper.camera, bodyPoints, Tracer.getTrace());
+		startDrawingOnePart();
+	} else {
+		EyesModeler.drawEyes(sceneWrapper.scene, sceneWrapper.camera, Tracer.getTrace());
 	}
 }
-
 
 window.onload = start;
