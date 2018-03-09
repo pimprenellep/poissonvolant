@@ -1,11 +1,11 @@
 
 const EyesModeler = {
-addEyes: function(parent, eyeSpecs) {
+addEyes: function(parents, eyeSpecs) {
 	const rightEye = this.makeRightEye(eyeSpecs);
 	const leftEye = this.makeLeftEye(eyeSpecs);
 
-	parent.add(rightEye);
-	parent.add(leftEye);
+	parents.right.add(rightEye);
+	parents.left.add(leftEye);
 },
 
 makeRightEye: function(eyeSpecs) {
@@ -35,7 +35,6 @@ makeEye: function(eyeSpecs, isRight) {
 
 	var material = new THREE.MeshBasicMaterial();
 	var eye = new THREE.Mesh(geometry, material);
-	eye.position.copy(center);
 
 	geometry = new THREE.SphereGeometry(radius/3, resolution, resolution);
 	geometry.applyMatrix(new THREE.Matrix4().makeScale(1, 1, 0.2));
@@ -46,7 +45,6 @@ makeEye: function(eyeSpecs, isRight) {
 	eye.add(iris);
 
 	if(!isRight) {
-		eye.position.z = -eye.position.z;
 		iris.position.z = -iris.position.z;
 	}
 	

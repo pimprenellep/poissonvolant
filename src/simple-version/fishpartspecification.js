@@ -7,10 +7,11 @@ const FishPartSpecification = {
         };
     },
 
-    getSingleFinSpecs: function(points) {
+    getSingleFinSpecs: function(points, contact) {
         return {
             'type' : 'single-fin',
             'points' : points,
+            'contact' : contact,
         };   
     },
 

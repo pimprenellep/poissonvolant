@@ -35,9 +35,11 @@ class WindowManager {
     setupGui() {
         var controls = {
             'exportOBJ' : this.exportOBJ,
+            'animateFish' : this.animateFish,
         }
         this.gui = new dat.GUI();
         this.gui.add(controls, 'exportOBJ');
+        this.gui.add(controls, 'animateFish');
     }
 
     setupMethods() {
@@ -46,6 +48,7 @@ class WindowManager {
         this.onMouseDownOnAddMode = this.onMouseDownOnAddMode.bind(this);
         this.onMouseUpOnAddMode = this.onMouseUpOnAddMode.bind(this);
         this.exportOBJ = this.exportOBJ.bind(this);
+        this.animateFish = this.animateFish.bind(this);
 
         document.addEventListener('mousedown', this.onMouseDown);
         document.addEventListener('mouseup', this.onMouseUp);
@@ -61,6 +64,7 @@ class WindowManager {
     }
 
     toogleMode() {
+        console.log(this.sceneWrapper.getAllObjects(this.fish.fishOrigin));
         this.state = 1 - this.state;
     }
 
@@ -90,6 +94,11 @@ class WindowManager {
 
         const fishPartSpecification = this.drawingInterpreter.interpret(drawingPoints);
         this.fish.addPart(fishPartSpecification);
+    }
+
+    animateFish() {
+        this.animator = new Animator();
+        this.animator.startAnimation(this.sceneWrapper, this.fish);
     }
 }
 

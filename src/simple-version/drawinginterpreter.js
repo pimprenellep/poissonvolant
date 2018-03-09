@@ -137,26 +137,33 @@ class DrawingInterpreter {
     }
 
     interpretSingleFin(points) {
-        return FishPartSpecification.getSingleFinSpecs(points);
+        const contact = this.findSingleFinContactPoint(points);
+        points = this.recenter(points, contact);
+        return FishPartSpecification.getSingleFinSpecs(points, contact);
     }
 
     interpretEye(points) {
         const [center, radiusX, radiusY] = this.findEyeCenterAndSize(points);
+        points = this.recenter(points, center);
         return FishPartSpecification.getEyeSpecs(center, radiusX, radiusY);
     }
 
     interpretDoubleFins(points) {
         const contact = this.findContactPoint(points);
         const rotation = this.findRotation(points, contact);
-        points = points.map(p => new THREE.Vector2(p.x - contact.x, p.y - contact.y));
+        points = this.recenter(points, contact);
         return FishPartSpecification.getDoubleFinSpecs(points, contact, rotation);
     }
 
     interpretWings(points) {
         const contact = this.findContactPoint(points);
         const rotation = this.findRotation(points, contact);
-        points = points.map(p => new THREE.Vector2(p.x - contact.x, p.y - contact.y));
+        points = this.recenter(points, contact);
         return FishPartSpecification.getWingSpecs(points, contact, rotation);
+    }
+
+    recenter(points, center) {
+        return points.map(p => new THREE.Vector2(p.x - center.x, p.y - center.y));
     }
 
     findEyeCenterAndSize(points) {
@@ -230,6 +237,12 @@ class DrawingInterpreter {
         const lowerDist = Math.abs(contact.y - lowerY);
 
         return upperDist > lowerDist;
+    }
+
+    findSingleFinContactPoint(points) {
+        return new THREE.Vector3((points[0].x + points[points.length-1].x)/2,
+                        (points[0].y + points[points.length-1].y)/2,
+                        0);
     }
 
     findContactPoint(points) {

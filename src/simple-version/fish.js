@@ -26,6 +26,25 @@ class Fish {
 		}
 	}
 
+	getPivot(position) {
+		const pivot = new THREE.Group();
+		pivot.name = 'pivot';
+		pivot.position.copy(position);
+		console.log(pivot.position);
+		this.fishOrigin.children[0].add(pivot);
+		return pivot;
+	}
+
+	getPivotPair(rightPosition) {
+		const leftPosition = new THREE.Vector3();
+		leftPosition.copy(rightPosition);
+		leftPosition.z *= -1;
+		return {
+			'right' : this.getPivot(rightPosition),
+			'left'  : this.getPivot(leftPosition),
+		};		
+	}
+
 	addPart(partSpecs) {
 		this.addPartOfType[partSpecs.type](partSpecs);
 	}
@@ -36,19 +55,23 @@ class Fish {
 	}
 
 	addEyes(eyeSpecs) {
-		EyesModeler.addEyes(this.fishOrigin, eyeSpecs);
+		const pivots = this.getPivotPair(eyeSpecs.center);
+		EyesModeler.addEyes(pivots, eyeSpecs);
 	}
 
 	addSingleFin(finSpecs) {
-		FinsModeler.addSingleFin(this.fishOrigin, finSpecs);
+		const pivot = this.getPivot(finSpecs.contact);
+		FinsModeler.addSingleFin(pivot, finSpecs);
 	}
 	
 	addDoubleFins(finSpecs) {
-		FinsModeler.addDoubleFins(this.fishOrigin, finSpecs);
+		const pivots = this.getPivotPair(finSpecs.contact);
+		FinsModeler.addDoubleFins(pivots, finSpecs);
 	}
 	
 	addWings(wingSpecs) {
-		FinsModeler.addWings(this.fishOrigin, wingSpecs);
+		const pivots = this.getPivotPair(wingSpecs.contact);
+		FinsModeler.addWings(pivots, wingSpecs);
 	}
 }
 

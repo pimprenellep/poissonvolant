@@ -5,7 +5,7 @@ class SceneWrapper {
 		this.initRenderer();
 		this.initScene();
 		this.animations = [];
-		this.animate();
+		this.animate(0);
 	}
 
 	initCamera() {
@@ -55,13 +55,24 @@ class SceneWrapper {
 
 	    const ambient = new THREE.AmbientLight( 0xffffff, 0.4 );
 	    this.scene.add(ambient);
-    }
+	}
+	
+	getAllObjects(obj) {
+		if(obj == undefined)
+			obj = this.scene;
 
-	animate() {
+		var objects = [obj];
+		for(let child of obj.children)
+			objects.push(...this.getAllObjects(child));
+
+		return objects;
+	}
+
+	animate(timeEllapsed) {
 		requestAnimationFrame(this.animate.bind(this));
 		Input.handle();
 		for(let animation of this.animations)
-			animation();
+			animation(timeEllapsed);
 		this.render();
 	}
 }
