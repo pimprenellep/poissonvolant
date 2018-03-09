@@ -1,43 +1,54 @@
 
-var sceneWrapper;
-var bodyPoints;
+class Fish {
+	constructor(sceneWrapper) {
+		this.sceneWrapper = sceneWrapper;
+		this.fishOrigin = new THREE.Group();
+		this.fishOrigin.name = 'fish';
+		this.sceneWrapper.scene.add(this.fishOrigin);
 
-function start() {
-	sceneWrapper = new SceneWrapper();
-	startDrawFishBody();
-}
+		this.setupMethods();
+	}
 
-function startDrawFishBody() {
-	Tracer.addAxis(sceneWrapper.scene);
-	Tracer.start(sceneWrapper, endDrawFishBody);
-}
+	setupMethods() {
+		this.addBody = this.addBody.bind(this);
+		this.addEyes = this.addEyes.bind(this);
+		this.addSingleFin = this.addSingleFin.bind(this);
+		this.addDoubleFins = this.addDoubleFins.bind(this);
+		this.addWings = this.addWings.bind(this);
 
-function endDrawFishBody() {
-	Tracer.removeTrace(sceneWrapper.scene);
-	bodyPoints = Tracer.getTrace();
-	BodyModeler.drawBody(sceneWrapper.scene, bodyPoints);
-	startDrawingFins();
-}
+		
+		this.addPartOfType = {
+			'body' : this.addBody,
+			'eye' : this.addEyes,
+			'single-fin' : this.addSingleFin,
+			'double-fins' : this.addDoubleFins,
+			'wings' : this.addWings,
+		}
+	}
 
-var isDrawingFins;
-function startDrawingFins() {
-	isDrawingFins = true;
-	Input.keyCommand[' '] = function() { isDrawingFins = false };
-	startDrawingOnePart();
-}
+	addPart(partSpecs) {
+		this.addPartOfType[partSpecs.type](partSpecs);
+	}
 
-function startDrawingOnePart() {
-	Tracer.start(sceneWrapper, finishOnePart);
-}
+	addBody(bodySpecs) {
+		this.bodyPoints = bodySpecs.points;
+		BodyModeler.addBody(this.fishOrigin, bodySpecs.points);	
+	}
 
-function finishOnePart() {
-	Tracer.removeTrace(sceneWrapper.scene);
-	if(isDrawingFins) {
-		FinsModeler.drawFin(sceneWrapper.scene, sceneWrapper.camera, bodyPoints, Tracer.getTrace());
-		startDrawingOnePart();
-	} else {
-		EyesModeler.drawEyes(sceneWrapper.scene, sceneWrapper.camera, Tracer.getTrace());
+	addEyes(eyeSpecs) {
+		EyesModeler.addEyes(this.fishOrigin, eyeSpecs);
+	}
+
+	addSingleFin(finSpecs) {
+		FinsModeler.addSingleFin(this.fishOrigin, finSpecs);
+	}
+	
+	addDoubleFins(finSpecs) {
+		FinsModeler.addDoubleFins(this.fishOrigin, finSpecs);
+	}
+	
+	addWings(wingSpecs) {
+		FinsModeler.addWings(this.fishOrigin, wingSpecs);
 	}
 }
 
-window.onload = start;

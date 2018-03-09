@@ -3,7 +3,7 @@ const USING_TEXTURE = true;
 
 const BodyModeler = {
 
-drawBody: function(scene, trace) {
+addBody: function(parent, trace) {
 	const splinePoints = this.smoothPoints(trace);
 
 	for(let point of splinePoints)
@@ -26,7 +26,7 @@ drawBody: function(scene, trace) {
 
 	fish = new THREE.Mesh(geometry, material);
 	fish.name = 'fish-body';
-	scene.add(fish);
+	parent.add(fish);
 },
 
 smoothPoints: function(points){

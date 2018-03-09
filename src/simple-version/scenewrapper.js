@@ -57,7 +57,6 @@ class SceneWrapper {
 	    this.scene.add(ambient);
     }
 
-
 	animate() {
 		requestAnimationFrame(this.animate.bind(this));
 		Input.handle();

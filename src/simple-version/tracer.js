@@ -1,5 +1,5 @@
 
-const Tracer = {
+var Tracer = {
 
 addAxis: function(scene) {
 	const material = new THREE.LineDashedMaterial(
@@ -15,39 +15,26 @@ addAxis: function(scene) {
 	scene.add(axis);
 },
 
-start: function(sceneWrapper, callback) {
-	this.sceneWrapper = sceneWrapper;
-	this.callback = callback;
-	this.addTraceLines();
-	this.startTracking = this.startTracking.bind(this);
-	this.stopTracking = this.stopTracking.bind(this);
-	document.addEventListener('mousedown', this.startTracking);
-	document.addEventListener('mouseup', this.stopTracking);
-},
-
 addTraceLines: function() {
 	this.tracePoints = [];
 	this.traceLines = new THREE.Group();
 	this.sceneWrapper.scene.add(this.traceLines);
 },
 
-startTracking: function() {
+startTracking: function(sceneWrapper) {
+	this.sceneWrapper = sceneWrapper;
+	this.addTraceLines();
 	this.sceneWrapper.animations.push(this.trackPosition.bind(this));
 	this.sceneWrapper.orbitControls.enabled = false;
 },
 
 stopTracking: function() {
 	this.sceneWrapper.animations.pop();
-	document.removeEventListener('mousedown', this.startTracking);
-	document.removeEventListener('mouseup', this.stopTracking);	
 	this.sceneWrapper.orbitControls.enabled = true;
-	this.callback();
-	//this.sceneWrapper = null;
-	//this.callback = null;
 },
 
-removeTrace: function(scene) {
-	scene.remove(this.traceLines);
+removeTrace: function() {
+	this.sceneWrapper.scene.remove(this.traceLines);
 },
 
 trackPosition: function() {
