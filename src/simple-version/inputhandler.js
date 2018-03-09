@@ -22,7 +22,9 @@ const Input = {
 
 };
 
-document.onkeydown = document.onkeyup = function (event) {
+document.addEventListener('keydown', onKeyEvent);
+document.addEventListener('keyup', onKeyEvent);
+function onKeyEvent(event) {
     Input.isPressed[event.key] = event.type == 'keydown';
 };
 

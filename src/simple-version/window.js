@@ -13,7 +13,8 @@ class WindowManager {
 
         Tracer.addAxis(this.sceneWrapper.scene);
 
-        Input.keyCommand[' '] = this.toogleMode.bind(this);
+        document.addEventListener('keydown', (event) => { if(event.key == ' ') this.toogleMode(); })
+        // Input.keyCommand[' '] = this.toogleMode.bind(this);
     }
 
     setupMethods() {
