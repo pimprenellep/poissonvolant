@@ -7,14 +7,37 @@ class WindowManager {
         this.fish = new Fish(this.sceneWrapper);
         this.drawingInterpreter = new DrawingInterpreter(this.sceneWrapper, this.fish);
         this.setupMethods();
-        
-        this.state = WindowStates.addMode;
-        this.tracking = false;
-
         Tracer.addAxis(this.sceneWrapper.scene);
+        this.setupGui();
+        
+        this.tracking = false;
+        this.state = WindowStates.addMode;
+        this.spaceDown = false;
 
-        document.addEventListener('keydown', (event) => { if(event.key == ' ') this.toogleMode(); })
-        // Input.keyCommand[' '] = this.toogleMode.bind(this);
+        this.setToggleOnSpace();
+    }
+
+    setToggleOnSpace() {
+        document.addEventListener('keydown', (event) => {
+            if(event.key == ' ') {
+                if(!this.spaceDown) {
+                    this.spaceDown = true;
+                    this.toogleMode(); 
+                }
+            }
+        });
+        document.addEventListener('keyup', (event) => { 
+            if(event.key == ' ')
+                this.spaceDown = false; 
+        });
+    }
+
+    setupGui() {
+        var controls = {
+            'exportOBJ' : this.exportOBJ,
+        }
+        this.gui = new dat.GUI();
+        this.gui.add(controls, 'exportOBJ');
     }
 
     setupMethods() {
@@ -22,6 +45,7 @@ class WindowManager {
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseDownOnAddMode = this.onMouseDownOnAddMode.bind(this);
         this.onMouseUpOnAddMode = this.onMouseUpOnAddMode.bind(this);
+        this.exportOBJ = this.exportOBJ.bind(this);
 
         document.addEventListener('mousedown', this.onMouseDown);
         document.addEventListener('mouseup', this.onMouseUp);
@@ -30,6 +54,10 @@ class WindowManager {
         this.onMouseDownOnState[WindowStates.addMode] = this.onMouseDownOnAddMode;
         this.onMouseUpOnState = {}
         this.onMouseUpOnState[WindowStates.addMode] = this.onMouseUpOnAddMode;
+    }
+
+    exportOBJ() {
+        Exporter.exportScene(this.sceneWrapper.scene);
     }
 
     toogleMode() {
