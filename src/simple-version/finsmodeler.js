@@ -27,7 +27,7 @@ addSingleFin: function(parent, finSpecs) {
 	//const geometry = new THREE.ShapeGeometry(finShape);
 	const material = new THREE.MeshLambertMaterial( {color: 0x990000, side: THREE.DoubleSide} );
 	const fin = new THREE.Mesh(geometry, material);
-	fin.name = 'fin';
+	fin.name = 'single-fin';
 	parent.add(fin);
 },
 
@@ -35,6 +35,7 @@ addWings: function(parents, specs) {
 	specs.color = WING_COLOR;
 	specs.opacity = WING_OPACITY;
 	specs.depth = WING_DEPTH;
+	specs.name = 'wing';
 	this.addDoubleAppendices(parents, specs);
 },
 
@@ -42,6 +43,7 @@ addDoubleFins: function(parents, specs) {
 	specs.color = DOUBLE_FIN_COLOR;
 	specs.opacity = FIN_OPACITY;
 	specs.depth = FIN_DEPTH;
+	specs.name = 'fin';
 	this.addDoubleAppendices(parents, specs);
 },
 
@@ -64,6 +66,8 @@ makeAppendix: function(specs) {
 	const material = new THREE.MeshLambertMaterial( {color: specs.color, opacity: specs.opacity, transparent:true, side: THREE.DoubleSide} );
 	const appendix = new THREE.Mesh(geometry, material);
 	appendix.rotateX(specs.rotation);
+
+	appendix.name = specs.name;
 	return appendix;
 },
 

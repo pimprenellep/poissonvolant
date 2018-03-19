@@ -98,7 +98,7 @@ class WindowManager {
 
     animateFish() {
         this.animator = new Animator();
-        this.animator.startAnimation(this.sceneWrapper, this.fish);
+        this.animator.start(this.sceneWrapper, this.fish);
     }
 }
 

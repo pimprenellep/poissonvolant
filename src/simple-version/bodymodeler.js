@@ -25,7 +25,7 @@ addBody: function(parent, trace) {
 			{side:THREE.DoubleSide});
 
 	fish = new THREE.Mesh(geometry, material);
-	fish.name = 'fish-body';
+	fish.name = 'body';
 	parent.add(fish);
 },
 
