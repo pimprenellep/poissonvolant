@@ -138,7 +138,7 @@ class DrawingInterpreter {
 
     interpretSingleFin(points) {
         const contact = this.findSingleFinContactPoint(points);
-        points = this.recenter(points, contact);
+        //points = this.recenter(points, contact);
         return FishPartSpecification.getSingleFinSpecs(points, contact);
     }
 

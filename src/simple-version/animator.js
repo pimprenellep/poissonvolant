@@ -18,8 +18,8 @@ startAnimation(part) {
 }
 
 getPartAnimation(part) {
-    if(part.name == 'body' || part.name == 'pivot')
-        return (timestamp) => (sinusoidalAnimation(part, timestamp));
+    if(['body', 'pivot', 'single-fin'].includes(part.name))
+        return getSinusoidalAnimation(part);
     else if(part.name == 'wing')
         return getRotateAnimation(part, WING_AMPLITUDE, WING_SPEED); 
     else if(part.name == 'fin')
@@ -30,13 +30,18 @@ getPartAnimation(part) {
 
 };
 
-function sinusoidalAnimation(obj, timestamp) {
+function getSinusoidalAnimation(obj) {
+    var offset = (x, t) => (3 * Math.cos(0.05*x - 0.005*t));
     if(obj.geometry && obj.geometry.vertices) {
-        for(let vertex of obj.geometry.vertices) 
-           vertex.z += 0.2 * Math.cos(0.05* vertex.x - 0.005*timestamp);
-        obj.geometry.verticesNeedUpdate = true;
+        let initialZPositions = obj.geometry.vertices.map(vertex => vertex.z);
+        return function(timestamp) {
+            for(let [index, vertex] of obj.geometry.vertices.entries()) 
+                vertex.z = initialZPositions[index] + offset(vertex.x, timestamp);
+            obj.geometry.verticesNeedUpdate = true;
+        }
     } else {
-        obj.position.z += 0.2 * Math.cos(0.05* obj.position.x - 0.005*timestamp);
+        let initialZPosition = obj.position.z;
+        return (timestamp) => (obj.position.z = initialZPosition + offset(obj.position.x, timestamp));
     }
 }
 

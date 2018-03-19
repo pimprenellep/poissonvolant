@@ -61,7 +61,7 @@ class Fish {
 
 	addSingleFin(finSpecs) {
 		const pivot = this.getPivot(finSpecs.contact);
-		FinsModeler.addSingleFin(pivot, finSpecs);
+		FinsModeler.addSingleFin(this.fishOrigin, finSpecs);
 	}
 	
 	addDoubleFins(finSpecs) {
