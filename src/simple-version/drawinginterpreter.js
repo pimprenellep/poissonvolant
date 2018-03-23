@@ -26,7 +26,7 @@ class DrawingInterpreter {
 
     isEye(points) {
         return this.isCenterInBody(points) && (
-            this.selfIntersects(points) || this.extremitiesClose(points) && this.almostSelfIntersects(points));
+        this.extremitiesClose(points) && this.almostSelfIntersects(points));
     }
 
     isCenterInBody(points) {
