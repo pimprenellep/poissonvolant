@@ -91,15 +91,36 @@ class WindowManager {
         Tracer.stopTracking();
         const drawingPoints = Tracer.getTrace();
         Tracer.removeTrace();
+        if(seemsToBeMisclick(drawingPoints))
+            return;
 
         const fishPartSpecification = this.drawingInterpreter.interpret(drawingPoints);
         this.fish.addPart(fishPartSpecification);
     }
 
+
     animateFish() {
+        if(this.state != WindowStates.adjustMode)
+            this.toogleMode();
         this.animator = new Animator();
         this.animator.start(this.sceneWrapper, this.fish);
     }
+}
+
+function seemsToBeMisclick(points) {
+    var distanceThreshold = 2;
+    var numPointsThreshold = 5; 
+    return points.length <= numPointsThreshold || totalDistance(points) <= distanceThreshold;
+}
+
+function totalDistance(points) {
+    var dist = (p, q) => (Math.sqrt((p.x - q.x)**2 + (p.y - q.y)**2));
+    var distance = 0;
+    for(let i = 0; i != points.length; ++i) {
+        j = (i + 1) % points.length;
+        distance += dist(points[i], points[j]); 
+    }
+    return distance;
 }
 
 
