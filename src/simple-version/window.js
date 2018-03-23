@@ -94,7 +94,8 @@ class WindowManager {
         if(seemsToBeMisclick(drawingPoints))
             return;
 
-        const fishPartSpecification = this.drawingInterpreter.interpret(drawingPoints);
+        const smoothedPoints = smoothPoints(drawingPoints);
+        const fishPartSpecification = this.drawingInterpreter.interpret(smoothedPoints);
         this.fish.addPart(fishPartSpecification);
     }
 
@@ -123,6 +124,10 @@ function totalDistance(points) {
     return distance;
 }
 
+function smoothPoints(points) {
+    var curve = new THREE.SplineCurve(points);
+    return curve.getSpacedPoints(30);
+}
 
 var windowManager;
 
