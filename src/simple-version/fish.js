@@ -30,7 +30,6 @@ class Fish {
 		const pivot = new THREE.Group();
 		pivot.name = 'pivot';
 		pivot.position.copy(position);
-		console.log(pivot.position);
 		this.fishOrigin.children[0].add(pivot);
 		return pivot;
 	}

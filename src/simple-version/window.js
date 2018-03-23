@@ -64,7 +64,6 @@ class WindowManager {
     }
 
     toogleMode() {
-        console.log(this.sceneWrapper.getAllObjects(this.fish.fishOrigin));
         this.state = 1 - this.state;
     }
 

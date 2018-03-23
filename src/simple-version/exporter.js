@@ -6,7 +6,6 @@ export: function(obj) {
 
     if(obj.matrix == undefined || obj.geometry == undefined)
         return;
-    console.log(obj);
 
     obj.updateMatrix();
     const matrix = obj.matrix;
