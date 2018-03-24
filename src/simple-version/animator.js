@@ -11,7 +11,6 @@ start(sceneWrapper, fish,bubbles) {
     this.fish = fish;
     this.bubbles = bubbles;
     console.log(sceneWrapper.getAllObjects(bubbles));
-    //generateBubbles(frequency,sceneWrapper);
     for(let part of sceneWrapper.getAllObjects(fish.fishOrigin))
         this.startAnimation(part);
     for(let bub of sceneWrapper.getAllObjects(bubbles))
@@ -22,7 +21,7 @@ startBubbles(bub){
     this.sceneWrapper.animations.push(animateBubbles(bub));
 }
 startAnimation(part) {
-    //this.sceneWrapper.animations.push(getHorizontalAnimation(part));
+    this.sceneWrapper.animations.push(getVerticalAnimation(part));
     this.sceneWrapper.animations.push(this.getPartAnimation(part));
 }
 
@@ -38,10 +37,15 @@ getPartAnimation(part) {
 }
 
 };
-function getHorizontalAnimation(obj){
+function getVerticalAnimation(obj){
     var offset = (t) =>(10* Math.sin(0.001*t));
     let intialYPosition = obj.position.y;
-    return (timestamp) => (obj.position.y = intialYPosition + offset(timestamp));
+    
+    if(['body','single-fin'].includes(obj.name))
+        return (timestamp) => (obj.position.y = intialYPosition + offset(timestamp));
+    else
+        return()=>(0);
+   
 }
 
 function getSinusoidalAnimation(obj) {
