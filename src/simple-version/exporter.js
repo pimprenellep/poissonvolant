@@ -8,7 +8,7 @@ export: function(obj) {
         return;
 
     obj.updateMatrix();
-    const matrix = obj.matrix;
+    const matrix = obj.matrixWorld;
 
     const toExport = obj.geometry.clone();
     toExport.applyMatrix( matrix );
