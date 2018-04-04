@@ -43,7 +43,7 @@ class WindowManager {
         this.gui = new dat.GUI();
         this.gui.add(controls, 'Download .obj');
         this.gui.add(controls, 'Animate Fish');
-        this.gui.add(controls, 'undo');
+        this.gui.add(controls, 'Undo');
     }
 
     setupMethods() {
@@ -54,15 +54,25 @@ class WindowManager {
         this.exportOBJ = this.exportOBJ.bind(this);
         this.undoLastAction = this.undoLastAction.bind(this);
         this.animateFish = this.animateFish.bind(this);
+        this.onWindowResize = this.onWindowResize.bind(this);
 
         document.addEventListener('mousedown', this.onMouseDown);
         document.addEventListener('mouseup', this.onMouseUp);
+
+        window.addEventListener('resize', this.onWindowResize);
 
         this.onMouseDownOnState = {}
         this.onMouseDownOnState[WindowStates.addMode] = this.onMouseDownOnAddMode;
         this.onMouseUpOnState = {}
         this.onMouseUpOnState[WindowStates.addMode] = this.onMouseUpOnAddMode;
     }
+    
+    onWindowResize() {
+    	this.sceneWrapper.camera.aspect = window.innerWidth / window.innerHeight;
+		this.sceneWrapper.camera.updateProjectionMatrix();
+        this.sceneWrapper.renderer.setSize( window.innerWidth, window.innerHeight );
+	}
+
 
     exportOBJ() {
         Exporter.exportScene(this.sceneWrapper.scene);

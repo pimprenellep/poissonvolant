@@ -3,11 +3,9 @@ class DrawingInterpreter {
     constructor(sceneWrapper, fish) {
         this.sceneWrapper = sceneWrapper;
         this.fish = fish;
-        this.interpretationCounter = 0;
     }
 
     interpret(points) {
-        this.interpretationCounter += 1;
         if(this.isBody(points))
             return this.interpretBody(points);
         else if(this.isEye(points))
