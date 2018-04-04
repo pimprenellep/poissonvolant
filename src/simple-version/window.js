@@ -104,6 +104,7 @@ class WindowManager {
             this.toogleMode();
         this.animator = new Animator();
         this.animator.start(this.sceneWrapper, this.fish);
+        Tracer.removeAxis();
     }
 }
 

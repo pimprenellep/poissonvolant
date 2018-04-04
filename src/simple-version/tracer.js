@@ -10,9 +10,14 @@ addAxis: function(scene) {
 	geometry.vertices.push(new THREE.Vector3(-1000, 0, 0));
 	geometry.vertices.push(new THREE.Vector3(1000, 0, 0));
 	geometry.computeLineDistances();
-	axis = new THREE.Line(geometry, material);
-	axis.name = 'axis';
-	scene.add(axis);
+	this.axis = new THREE.Line(geometry, material);
+	this.axis.name = 'axis';
+	this.scene = scene;
+	scene.add(this.axis);
+},
+
+removeAxis: function() {
+	this.scene.remove(this.axis);
 },
 
 addTraceLines: function() {
