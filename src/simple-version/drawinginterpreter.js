@@ -21,7 +21,7 @@ class DrawingInterpreter {
     }
 
     isBody(points)  {
-        return this.interpretationCounter == 1;
+        return !this.sceneWrapper.getAllObjects().some((obj) => (obj.name == 'body'));
     }
 
     isEye(points) {

@@ -9,6 +9,8 @@ class WindowManager {
         this.setupMethods();
         Tracer.addAxis(this.sceneWrapper.scene);
         this.setupGui();
+
+        this.actions = [];
         
         this.tracking = false;
         this.state = WindowStates.addMode;
@@ -34,12 +36,14 @@ class WindowManager {
 
     setupGui() {
         var controls = {
-            'exportOBJ' : this.exportOBJ,
-            'animateFish' : this.animateFish,
+            'Download .obj' : this.exportOBJ,
+            'Animate Fish' : this.animateFish,
+            'Undo' : this.undoLastAction,
         }
         this.gui = new dat.GUI();
-        this.gui.add(controls, 'exportOBJ');
-        this.gui.add(controls, 'animateFish');
+        this.gui.add(controls, 'Download .obj');
+        this.gui.add(controls, 'Animate Fish');
+        this.gui.add(controls, 'undo');
     }
 
     setupMethods() {
@@ -48,6 +52,7 @@ class WindowManager {
         this.onMouseDownOnAddMode = this.onMouseDownOnAddMode.bind(this);
         this.onMouseUpOnAddMode = this.onMouseUpOnAddMode.bind(this);
         this.exportOBJ = this.exportOBJ.bind(this);
+        this.undoLastAction = this.undoLastAction.bind(this);
         this.animateFish = this.animateFish.bind(this);
 
         document.addEventListener('mousedown', this.onMouseDown);
@@ -95,9 +100,24 @@ class WindowManager {
 
         const smoothedPoints = smoothPoints(drawingPoints);
         const fishPartSpecification = this.drawingInterpreter.interpret(smoothedPoints);
-        this.fish.addPart(fishPartSpecification);
+        this.addToFish(fishPartSpecification);
     }
 
+    addToFish(fishPartSpecification) {
+        const action = new Action();
+        action.objsBefore(this.sceneWrapper.getAllObjects()); 
+        this.fish.addPart(fishPartSpecification);
+        action.objsAfter(this.sceneWrapper.getAllObjects());
+        this.actions.push(action);
+    }
+
+    undoLastAction() {
+        if(this.actions.length == 0)
+            return;
+
+        const lastAction = this.actions.pop();
+        lastAction.undo();
+    }
 
     animateFish() {
         if(this.state != WindowStates.adjustMode)
