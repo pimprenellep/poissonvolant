@@ -10,11 +10,18 @@ start(sceneWrapper, fish,bubbles) {
     this.sceneWrapper = sceneWrapper;
     this.fish = fish;
     this.bubbles = bubbles;
-    console.log(sceneWrapper.getAllObjects(bubbles));
-    for(let part of sceneWrapper.getAllObjects(fish.fishOrigin))
+
+    for(let part of this.sceneWrapper.getAllObjects(fish.fishOrigin))
         this.startAnimation(part);
-    for(let bub of sceneWrapper.getAllObjects(bubbles))
-        this.startBubbles(bub);
+
+    this.addBubbles();
+}
+
+addBubbles() {
+    this.bubbles = createBubbleGroup(this.sceneWrapper);
+    create_bubbles(this.bubbles);
+    for(let bubble of this.sceneWrapper.getAllObjects(this.bubbles))
+        this.startBubbles(bubble);
 }
 
 startBubbles(bub){
@@ -38,7 +45,7 @@ getPartAnimation(part) {
 
 };
 function getVerticalAnimation(obj){
-    var offset = (t) =>(10* Math.sin(0.001*t));
+    var offset = (t) =>(5* Math.sin(0.001*t));
     let intialYPosition = obj.position.y;
     
     if(['body','single-fin'].includes(obj.name))
@@ -77,13 +84,13 @@ function animateBubbles(obj){
     const intialYPosition = obj.position.y;
     const initialXPosition = obj.position.x;
     function f(timestamp){
-        if(obj.position.y>SCREEN_SIZE/2){
-            obj.position.y = -SCREEN_SIZE/2;
-            obj.position.x = Math.random()*-SCREEN_SIZE+SCREEN_SIZE/2;
+        if(obj.position.y>BUBBLE_REGION/2){
+            obj.position.y = -BUBBLE_REGION/2;
+            obj.position.x = Math.random()*-BUBBLE_REGION+BUBBLE_REGION/2;
         }
-        if(obj.position.x>SCREEN_SIZE/2){
-            obj.position.x = -SCREEN_SIZE/2;
-            obj.position.y = Math.random()*-SCREEN_SIZE+SCREEN_SIZE/2;
+        if(obj.position.x>BUBBLE_REGION/2){
+            obj.position.x = -BUBBLE_REGION/2;
+            obj.position.y = Math.random()*-BUBBLE_REGION+BUBBLE_REGION/2;
 
         }
         obj.position.y=obj.position.y+offsety(timestamp);

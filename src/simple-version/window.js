@@ -5,8 +5,6 @@ class WindowManager {
     constructor() {
         this.sceneWrapper = new SceneWrapper();
         this.fish = new Fish(this.sceneWrapper);
-        this.bubbles = createBubbleGroup(this.sceneWrapper);
-        create_bubbles(this.bubbles);
         this.drawingInterpreter = new DrawingInterpreter(this.sceneWrapper, this.fish);
         this.setupMethods();
         Tracer.addAxis(this.sceneWrapper.scene);
@@ -105,7 +103,7 @@ class WindowManager {
         if(this.state != WindowStates.adjustMode)
             this.toogleMode();
         this.animator = new Animator();
-        this.animator.start(this.sceneWrapper, this.fish, this.bubbles);
+        this.animator.start(this.sceneWrapper, this.fish);
     }
 }
 
