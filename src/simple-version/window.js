@@ -126,7 +126,16 @@ function totalDistance(points) {
 
 function smoothPoints(points) {
     var curve = new THREE.SplineCurve(points);
-    return curve.getSpacedPoints(30);
+    const numPoints = Math.floor(getTraceLength(points)/3);
+    return curve.getSpacedPoints(numPoints);
+}
+
+function getTraceLength(points) {
+    const dist = (p, q) => Math.sqrt((p.x - q.x)**2 + (p.y - q.y)**2);
+    var traceLength = 0;
+    for(let i = 0; i != points.length - 1; ++i)
+        traceLength += dist(points[i], points[i+1]);
+    return traceLength;
 }
 
 var windowManager;
